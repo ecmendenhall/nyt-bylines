@@ -1,0 +1,14 @@
+{
+    "name": "NYT Bylines",
+    "version": "0.1",
+    "description": "Add Bylines",
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+    "content_scripts": [{
+        "matches": ["*://*.nytimes.com/"],
+        "js": ["bylines.js"]
+    }],
+    "manifest_version": 2
+  }
