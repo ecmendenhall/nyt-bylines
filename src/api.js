@@ -15,13 +15,17 @@ class API {
         const body = {
             operationName: 'BylineQuery',
             variables: {},
-            query: `query BylineQuery { article(id: '${ articleUrl }') { bylines { renderedRepresentation }}}`
+            query: `query BylineQuery { article(id: \"${ articleUrl }\") { bylines { renderedRepresentation }}}`
         };
-        return fetch(this.graphAPIEndpoint, {
+       return fetch(this.graphAPIEndpoint, {
             method: 'POST',
             headers: headers,
             body: JSON.stringify(body)
-        });
+        }).then(
+            response => response.json()
+        ).then(
+            json => json.data.article.bylines[0].renderedRepresentation
+        )
     }
 
 }

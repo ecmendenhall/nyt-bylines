@@ -7,7 +7,7 @@
         "persistent": false
     },
     "content_scripts": [{
-        "matches": ["*://*.nytimes.com/"],
+        "matches": ["*://*.nytimes.com/*"],
         "js": ["bylines.js"]
     }],
     "manifest_version": 2
