@@ -2,7 +2,6 @@
   "name": "NYT Bylines",
   "version": "0.1",
   "description": "Add bylines back to the NYT homepage.",
-  "default_locale": "en",
   "author": "EC Mendenhall",
   "homepage_url": "https://github.com/ecmendenhall/nyt-bylines",
   "content_scripts": [
