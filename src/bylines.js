@@ -4,13 +4,22 @@ const dom = require("./dom");
 
 const headers = scraper.extractHeaders(document.documentElement.innerHTML);
 const client = new API(headers);
-const links = scraper.extractLinks();
+var seen = new Set();
 
-for (let a of links) {
-  client
-    .loadByline(a.href)
-    .then(byline => {
-      dom.addByline(a, byline);
-    })
-    .catch(e => console.error(e));
-}
+const addBylines = () => {
+  let links = scraper.extractLinks();
+  for (let a of links) {
+    if (!seen.has(a)) {
+      seen.add(a);
+      client
+        .loadByline(a.href)
+        .then(byline => {
+          dom.addByline(a, byline);
+        })
+        .catch(e => console.log(e));
+    }
+  }
+};
+
+addBylines();
+setInterval(addBylines, 500);
