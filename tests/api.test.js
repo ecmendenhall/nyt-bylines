@@ -6,23 +6,28 @@ describe("api", () => {
 
   beforeEach(() => {
     global.fetch = jest.fn(() => {
-      return new Promise((resolve, reject) => resolve({
-        json: () => {
-          return new Promise((resolve, _reject) => {
-            resolve({
-              data: {
-                article: {
-                  bylines: [{ renderedRepresentation: "By Sharon LaFraniere" }]
+      return new Promise((resolve, reject) =>
+        resolve({
+          json: () => {
+            return new Promise((resolve, _reject) => {
+              resolve({
+                data: {
+                  article: {
+                    bylines: [
+                      { renderedRepresentation: "By Sharon LaFraniere" }
+                    ]
+                  }
                 }
-              }
+              });
             });
-          });
-        }
-      }));
+          }
+        })
+      );
     });
-    this.client = new api.API("https://graphql.example.com", {
+    this.client = new api.API({
       "some-token": "foobar"
-    });
+    },
+    "https://graphql.example.com");
   });
 
   const callArgs = [

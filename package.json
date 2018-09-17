@@ -2,7 +2,8 @@
   "name": "nyt-bylines",
   "version": "0.1.0",
   "scripts": {
-    "test": "./node_modules/.bin/jest"
+    "test": "./node_modules/.bin/jest",
+    "build": "./node_modules/.bin/webpack"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^4.5.2",

@@ -1,4 +1,4 @@
-const scraper = require('./../src/scraper');
+const scraper = require("./../src/scraper");
 
 const scriptTag = `
 <script>
@@ -18,18 +18,64 @@ const scriptTag = `
 </script>
 `;
 
-describe('scraper', () => {
+describe("scraper", () => {
+  it("extracts nyt-token from document source", () => {
+    expect(scraper.extractHeaders(scriptTag)["nyt-token"]).toBe("fake-token");
+  });
 
-    it('extracts nyt-token from document source', () => {
-        expect(scraper.extractHeaders(scriptTag)['nyt-token']).toBe('fake-token');
-    });
+  it("extracts nyt-app-version from document source", () => {
+    expect(scraper.extractHeaders(scriptTag)["nyt-app-version"]).toBe("0.0.3");
+  });
 
-    it('extracts nyt-app-version from document source', () => {
-        expect(scraper.extractHeaders(scriptTag)['nyt-app-version']).toBe('0.0.3');
-    });
+  it("extracts nyt-app-type from document source", () => {
+    expect(scraper.extractHeaders(scriptTag)["nyt-app-type"]).toBe(
+      "project-vi"
+    );
+  });
 
-    it('extracts nyt-app-type from document source', () => {
-        expect(scraper.extractHeaders(scriptTag)['nyt-app-type']).toBe('project-vi');
-    });
+  it("extracts links from document", () => {
+    document.body.innerHTML = `
+          <div>
+            <a href="https://www.nyyimes.com/2018/01/01/article.html">
+              <p>Some article</p>
+            </a>
+          </div>
+        `;
+    expect(scraper.extractLinks().length).toBe(1);
+  });
 
+  it("extracts relative links", () => {
+    document.body.innerHTML = `
+          <div>
+            <a href="/2019/01/01/article.html">
+              <p>Some article</p>
+            </a>
+          </div>
+        `;
+    expect(scraper.extractLinks().length).toBe(1);
+  });
+
+  it("ignores opinion URLs", () => {
+    document.body.innerHTML = `
+          <div>
+            <a href="/2019/01/01/opinion/article.html">
+              <p>Some article</p>
+            </a>
+          </div>
+        `;
+    expect(scraper.extractLinks().length).toBe(0);
+  });
+
+  it("ignores links with nested figures", () => {
+    document.body.innerHTML = `
+          <div>
+            <a href="/2019/01/01/article.html">
+              <div>
+                <figure></figure>
+              </div>
+            </a>
+          </div>
+        `;
+    expect(scraper.extractLinks().length).toBe(0);
+  });
 });
